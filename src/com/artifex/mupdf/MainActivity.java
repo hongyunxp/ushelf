@@ -19,6 +19,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -33,7 +34,11 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends Activity {
 
 	private File mDirectory;
+	private File cacheDirectory;
+	private File imgBook;
 	private File[] mFiles;
+	private File[] cacheImgs;
+	private Utilities utility;
 	//private ImageButton imgBtnGrid;
 	//private ImageButton imgBtnList;
 
@@ -90,12 +95,27 @@ public class MainActivity extends Activity {
 			}
 
 		});
+		
+		/* 搜索缓存文件夹，若不存在则新建缓存文件夹 */
+		cacheDirectory = new File("/mnt/sdcard/ushelf_cache");
+		if ( !cacheDirectory.exists() ) {
+			cacheDirectory.mkdir();
+		}
 
+		/* 表格显示 */
 		GridView gridview = (GridView) findViewById(R.id.GridView);
 		ArrayList<HashMap<String, Object>> bookList = new ArrayList<HashMap<String, Object>>();
 
 		for (File f : mFiles) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
+			/* 对于每个文件，查找是否已经存在缩略图，若不存在，自动生成一个并缓存，若存在直接添加到ItemImage中 */
+			imgBook = new File("/mnt/sdcard/ushelf_cache/"
+					+ f.getName().substring(0, f.getName().length() - 4)
+					+ ".png");
+			if ( !imgBook.exists() ) {
+				Log.i("file is not exist!", "thumimage" );
+				
+			}
 			map.put("ItemImage", R.drawable.shadow);
 			map.put("ItemText", f.getName());
 			bookList.add(map);
