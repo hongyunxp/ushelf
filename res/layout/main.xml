@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.artifex.mupdf.BookShelf xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/GridView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:columnWidth="110dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:horizontalSpacing="20dp"
+    android:verticalSpacing="18dp"
+    android:fadingEdge="none"
+    android:gravity="center"
+    android:numColumns="auto_fit"
+    android:stretchMode="columnWidth" >
+</com.artifex.mupdf.BookShelf>
