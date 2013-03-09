@@ -92,32 +92,6 @@ public class MuPDFCore
 			int patchW, int patchH) {
 		gotoPage(page);
 		drawPage(bitmap, pageW, pageH, patchX, patchY, patchW, patchH);
-		File f = new File("/mnt/sdcard/Download/test.png");
-		try {
-			f.createNewFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			Log.e(e1.getMessage(), "I/Oerror");
-		}
-		FileOutputStream fOut = null;
-		try {
-			fOut = new FileOutputStream(f);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			Log.e(e.getMessage(), "I/Oerror");
-		}
-		bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-		try {
-			fOut.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-			Log.e(e.getMessage(), "I/Oerror");
-		}
-		try {
-			fOut.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public synchronized int hitLinkPage(int page, float x, float y) {
