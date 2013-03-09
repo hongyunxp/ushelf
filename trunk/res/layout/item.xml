@@ -4,12 +4,13 @@
     android:layout_height="match_parent" >
     
     <ImageView 
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:id="@+id/ItemImage"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="18dp"
         android:layout_marginLeft="10dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:layout_height="157dp"
+        android:background="@drawable/shadow"
+        android:onClick="null"
         android:layout_centerHorizontal="true"/>
     
     <!-- <TextView 

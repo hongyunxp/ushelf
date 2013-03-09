@@ -1,6 +1,7 @@
 package com.artifex.mupdf;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
@@ -16,6 +17,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,8 +29,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleAdapter.ViewBinder;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -38,7 +43,7 @@ public class MainActivity extends Activity {
 	private File imgBook;
 	private File[] mFiles;
 	private File[] cacheImgs;
-	private Utilities utility;
+	private Utilities utility = new Utilities();
 	//private ImageButton imgBtnGrid;
 	//private ImageButton imgBtnList;
 
@@ -107,16 +112,20 @@ public class MainActivity extends Activity {
 		ArrayList<HashMap<String, Object>> bookList = new ArrayList<HashMap<String, Object>>();
 
 		for (File f : mFiles) {
+			String tmpName = f.getName().substring(0, f.getName().length() - 4);
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			/* 对于每个文件，查找是否已经存在缩略图，若不存在，自动生成一个并缓存，若存在直接添加到ItemImage中 */
 			imgBook = new File("/mnt/sdcard/ushelf_cache/"
-					+ f.getName().substring(0, f.getName().length() - 4)
-					+ ".png");
+					+ tmpName + "_thumb.png");
 			if ( !imgBook.exists() ) {
-				Log.i("file is not exist!", "thumimage" );
+				Log.i("file is not exist!", "thumbimage" );
+				utility.saveThumbnail(tmpName ,0);
 				
 			}
-			map.put("ItemImage", R.drawable.shadow);
+	
+			Bitmap bm = BitmapFactory.decodeFile("/mnt/sdcard/ushelf_cache/"
+					+ tmpName + "_thumb.png");
+			map.put("ItemImage", bm ); 
 			map.put("ItemText", f.getName());
 			bookList.add(map);
 		}
@@ -126,6 +135,21 @@ public class MainActivity extends Activity {
 				new String[] { "ItemImage" }, new int[] { R.id.ItemImage });
 		// new String[]{"ItemImage","ItemText"}, //对应map的Key
 		// new int[]{R.id.ItemImage,R.id.ItemText}); //对应R的Id
+		saItem.setViewBinder(new ViewBinder(){
+
+			@Override
+			public boolean setViewValue(View view, Object data,
+					String textRepresentation) {
+				if ( (view instanceof ImageView) & (data instanceof Bitmap) ) {
+					ImageView iv = (ImageView) view;
+					Bitmap bm = (Bitmap) data;
+					iv.setImageBitmap(bm);
+					return true;
+				}
+				return false;
+			}  
+			
+		});
 
 		// 添加Item到网格中
 		gridview.setAdapter(saItem);
