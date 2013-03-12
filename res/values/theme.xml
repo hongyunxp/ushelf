@@ -11,6 +11,8 @@
 
     <style name="bookTop" parent="android:Theme">
         <item name="android:windowTitleSize">48dp</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
     </style>
     

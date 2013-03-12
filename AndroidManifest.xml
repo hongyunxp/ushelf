@@ -14,7 +14,7 @@
                  android:hardwareAccelerated="true">
         <activity android:name="MainActivity"
                   android:label="@string/picker_title"
-                  android:theme="@style/bookTop">
+                  android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

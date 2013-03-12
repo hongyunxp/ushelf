@@ -6,11 +6,11 @@
     <ImageView 
         android:layout_width="140dp"
         android:id="@+id/ItemImage"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="14dp"
         android:layout_marginLeft="10dp"
         android:layout_height="157dp"
         android:background="@drawable/shadow"
-        android:onClick="null"
+        android:contentDescription="@string/listImage"
         android:layout_centerHorizontal="true"/>
     
     <!-- <TextView 
