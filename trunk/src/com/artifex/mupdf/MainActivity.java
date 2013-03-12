@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -35,14 +36,16 @@ public class MainActivity extends Activity {
 	private File imgBook;
 	private File[] mFiles;
 	private Utilities utility = new Utilities();
-	private TextView txtTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-		txtTitle = (TextView)findViewById(R.id.txtTitle);
-		txtTitle.setText("a12df");
+
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        setContentView(R.layout.main);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+                        R.layout.titlebar);
+        
 		
 		String storageState = Environment.getExternalStorageState();
 
