@@ -18,4 +18,5 @@
     <string name="topImage">topImage</string>
     <string name="listImage">listImage</string>
     <string name="bookShadow">bookShadow</string>
+    <string name="books">图书</string>
 </resources>

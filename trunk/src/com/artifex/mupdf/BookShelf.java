@@ -23,7 +23,7 @@ public class BookShelf extends GridView {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         int count = getChildCount();
-        int top = count > 0 ? getChildAt(0).getTop() : 0;
+        int top = 0;//count > 0 ? getChildAt(0).getTop() : 0;
         int backgroundWidth = background.getWidth();
         int backgroundHeight = background.getHeight();
         int width = getWidth();

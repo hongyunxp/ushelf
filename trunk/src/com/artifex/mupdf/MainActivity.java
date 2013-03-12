@@ -1,19 +1,14 @@
 package com.artifex.mupdf;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
+import com.artifex.mupdf.R.layout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
@@ -24,15 +19,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleAdapter.ViewBinder;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -42,30 +34,15 @@ public class MainActivity extends Activity {
 	private File cacheDirectory;
 	private File imgBook;
 	private File[] mFiles;
-	private File[] cacheImgs;
 	private Utilities utility = new Utilities();
-	//private ImageButton imgBtnGrid;
-	//private ImageButton imgBtnList;
+	private TextView txtTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.main);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-				R.layout.titlebar);
-		
-		//imgBtnGrid = (ImageButton)this.findViewById(R.id.grid_btn);
-		//imgBtnList = (ImageButton)this.findViewById(R.id.list_btn);
-		
-		/*imgBtnGrid.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				  displayToast("Clicked!");
-			}
-		});*/
+		txtTitle = (TextView)findViewById(R.id.txtTitle);
+		txtTitle.setText("a12df");
 		
 		String storageState = Environment.getExternalStorageState();
 
