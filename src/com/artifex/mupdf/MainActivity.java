@@ -5,13 +5,11 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.artifex.mupdf.R.layout;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -21,13 +19,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleAdapter.ViewBinder;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity {
 
@@ -36,6 +33,9 @@ public class MainActivity extends Activity {
 	private File imgBook;
 	private File[] mFiles;
 	private Utilities utility = new Utilities();
+	private Button btnEdit;
+	private Button btnList;
+	private Button btnGrid;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,21 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                         R.layout.titlebar);
+        
+        btnList = (Button)findViewById(R.id.btnList);
+        btnEdit = (Button)findViewById(R.id.btnEdit);
+        btnGrid = (Button)findViewById(R.id.btnGrid);
+        
+        btnList.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, ListModelView.class);
+				btnList.setBackgroundResource(R.drawable.list_in_30);
+				btnGrid.setBackgroundResource(R.drawable.grid_on_30);
+				MainActivity.this.startActivity(intent);
+			}
+		});
         
 		
 		String storageState = Environment.getExternalStorageState();
@@ -113,8 +128,7 @@ public class MainActivity extends Activity {
 		SimpleAdapter saItem = new SimpleAdapter(this, bookList, // 数据源
 				R.layout.item, // xml实现
 				new String[] { "ItemImage" }, new int[] { R.id.ItemImage });
-		// new String[]{"ItemImage","ItemText"}, //对应map的Key
-		// new int[]{R.id.ItemImage,R.id.ItemText}); //对应R的Id
+		
 		saItem.setViewBinder(new ViewBinder(){
 
 			@Override
@@ -148,9 +162,4 @@ public class MainActivity extends Activity {
 		});
 
 	}
-	
-	 private void displayToast(String s)
-     {
-         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-     }
 }

@@ -19,4 +19,6 @@
     <string name="listImage">listImage</string>
     <string name="bookShadow">bookShadow</string>
     <string name="books">图书</string>
+    <string name="edit">编辑</string>
+    <string name="lable_list">列表</string>
 </resources>
