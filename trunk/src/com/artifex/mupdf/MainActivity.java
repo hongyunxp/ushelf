@@ -36,6 +36,8 @@ public class MainActivity extends Activity {
 	private Button btnEdit;
 	private Button btnList;
 	private Button btnGrid;
+	private boolean smodel = true;	//true : grid, false : list
+	private ArrayList<HashMap<String, Object>> bookList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +51,6 @@ public class MainActivity extends Activity {
         btnList = (Button)findViewById(R.id.btnList);
         btnEdit = (Button)findViewById(R.id.btnEdit);
         btnGrid = (Button)findViewById(R.id.btnGrid);
-        
-        btnList.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, ListModelView.class);
-				btnList.setBackgroundResource(R.drawable.list_in_30);
-				btnGrid.setBackgroundResource(R.drawable.grid_on_30);
-				MainActivity.this.startActivity(intent);
-			}
-		});
-        
 		
 		String storageState = Environment.getExternalStorageState();
 
@@ -101,10 +91,8 @@ public class MainActivity extends Activity {
 		if ( !cacheDirectory.exists() ) {
 			cacheDirectory.mkdir();
 		}
-
-		/* 表格显示 */
-		GridView gridview = (GridView) findViewById(R.id.GridView);
-		ArrayList<HashMap<String, Object>> bookList = new ArrayList<HashMap<String, Object>>();
+		
+		bookList = new ArrayList<HashMap<String, Object>>();
 
 		for (File f : mFiles) {
 			String tmpName = f.getName().substring(0, f.getName().length() - 4);
@@ -124,7 +112,22 @@ public class MainActivity extends Activity {
 			map.put("ItemText", f.getName());
 			bookList.add(map);
 		}
-
+		
+		btnGrid.setOnClickListener(listernGrid);
+		btnList.setOnClickListener(listernList);
+	
+		if ( smodel == true ) {
+			showGrid();
+		} else {
+			showList();
+		}
+		
+	}
+	
+	private void showGrid() {
+		/* 表格显示 */
+		GridView gridview = (GridView) findViewById(R.id.GridView);
+		
 		SimpleAdapter saItem = new SimpleAdapter(this, bookList, // 数据源
 				R.layout.item, // xml实现
 				new String[] { "ItemImage" }, new int[] { R.id.ItemImage });
@@ -162,4 +165,44 @@ public class MainActivity extends Activity {
 		});
 
 	}
+	
+	private void showList() {
+		
+	}
+
+	private void setGridView() {
+		setContentView(R.layout.main);
+	}
+	
+	private void setListView() {
+		setContentView(R.layout.main_list);
+	}
+	
+	private android.view.View.OnClickListener listernList = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			setListView();
+			btnGrid.setBackgroundResource(R.drawable.grid_on_30);
+			btnList.setBackgroundResource(R.drawable.list_in_30);
+		}
+	};
+	
+	private android.view.View.OnClickListener listernGrid = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			setGridView();
+			btnGrid.setBackgroundResource(R.drawable.grid_in_30);
+			btnList.setBackgroundResource(R.drawable.list_on_30);
+		}
+	};
+	
+	private android.view.View.OnClickListener listernEdit = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			
+		}
+	};
 }
