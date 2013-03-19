@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/imgThumb"
-        android:layout_width="71dp"
+        android:layout_width="63dp"
         android:layout_height="80dp"
         android:background="@android:color/darker_gray" >
     </ImageView>
@@ -15,6 +15,7 @@
         android:id="@+id/txtBookTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:background="@android:color/white"
         android:padding="10dp"
         android:textSize="20sp" >
