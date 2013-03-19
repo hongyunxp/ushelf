@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleAdapter.ViewBinder;
 
@@ -36,7 +37,8 @@ public class MainActivity extends Activity {
 	private Button btnEdit;
 	private Button btnList;
 	private Button btnGrid;
-	private boolean smodel = true;	//true : grid, false : list
+	private static boolean smodel = true;	//true : grid, false : list
+	private ListView lv;
 	private ArrayList<HashMap<String, Object>> bookList;
 
 	@Override
@@ -44,7 +46,11 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.main);
+        if ( smodel == true ) {
+        	setContentView(R.layout.main);
+        } else {
+        	setContentView(R.layout.main_list);
+        }
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                         R.layout.titlebar);
         
@@ -118,9 +124,12 @@ public class MainActivity extends Activity {
 	
 		if ( smodel == true ) {
 			showGrid();
-		} else {
-			showList();
-		}
+        } else {
+        	showList();
+        	btnGrid.setBackgroundResource(R.drawable.grid_on_30);
+			btnList.setBackgroundResource(R.drawable.list_in_30);
+        }
+		
 		
 	}
 	
@@ -168,6 +177,24 @@ public class MainActivity extends Activity {
 	
 	private void showList() {
 		
+		lv = (ListView)findViewById(R.id.bookListView);
+		ListAdapter listAdapter = new ListAdapter(this, bookList);
+		lv.setAdapter(listAdapter);
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> l, View v, int position,
+					long id) {
+				Uri uri = Uri.parse(mFiles[position].getAbsolutePath());
+				Intent intent = new Intent(MainActivity.this,
+						MuPDFActivity.class);
+				intent.setAction(Intent.ACTION_VIEW);
+				intent.setData(uri);
+				startActivity(intent);
+			}
+			
+		});
+		
 	}
 
 	private void setGridView() {
@@ -183,6 +210,8 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			setListView();
+			showList();
+			smodel = false;
 			btnGrid.setBackgroundResource(R.drawable.grid_on_30);
 			btnList.setBackgroundResource(R.drawable.list_in_30);
 		}
@@ -193,6 +222,8 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			setGridView();
+			showGrid();
+			smodel = true;
 			btnGrid.setBackgroundResource(R.drawable.grid_in_30);
 			btnList.setBackgroundResource(R.drawable.list_on_30);
 		}
