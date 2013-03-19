@@ -40,16 +40,18 @@ public final class R {
         public static final int top=0x7f020016;
     }
     public static final class id {
-        public static final int GridView=0x7f07000e;
+        public static final int GridView=0x7f070010;
         public static final int ItemImage=0x7f07000d;
-        public static final int btnEdit=0x7f070013;
-        public static final int btnGrid=0x7f070011;
-        public static final int btnList=0x7f070012;
+        public static final int bookListView=0x7f070011;
+        public static final int btnEdit=0x7f070016;
+        public static final int btnGrid=0x7f070014;
+        public static final int btnList=0x7f070015;
         public static final int cancel=0x7f070006;
         public static final int docNameText=0x7f070004;
+        public static final int imgThumb=0x7f07000e;
         public static final int lowerButtons=0x7f07000a;
         public static final int outlineButton=0x7f070003;
-        public static final int page=0x7f070010;
+        public static final int page=0x7f070013;
         public static final int pageNumber=0x7f07000c;
         public static final int pageSlider=0x7f07000b;
         public static final int searchBack=0x7f070008;
@@ -57,18 +59,20 @@ public final class R {
         public static final int searchForward=0x7f070009;
         public static final int searchText=0x7f070007;
         public static final int switcher=0x7f070000;
-        public static final int title=0x7f07000f;
+        public static final int title=0x7f070012;
         public static final int topBar=0x7f070001;
         public static final int topBar2=0x7f070005;
+        public static final int txtBookTitle=0x7f07000f;
     }
     public static final class layout {
         public static final int buttons=0x7f030000;
         public static final int item=0x7f030001;
-        public static final int main=0x7f030002;
-        public static final int main_list=0x7f030003;
-        public static final int outline_entry=0x7f030004;
-        public static final int picker_entry=0x7f030005;
-        public static final int titlebar=0x7f030006;
+        public static final int item_list=0x7f030002;
+        public static final int main=0x7f030003;
+        public static final int main_list=0x7f030004;
+        public static final int outline_entry=0x7f030005;
+        public static final int picker_entry=0x7f030006;
+        public static final int titlebar=0x7f030007;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
