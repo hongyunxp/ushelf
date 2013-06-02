@@ -72,8 +72,8 @@ public class ListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		holder.img.setImageBitmap((Bitmap) mData.get(position).get(
-				"ItemImage"));
+		holder.img
+				.setImageBitmap((Bitmap) mData.get(position).get("ItemImage"));
 		holder.title.setText((String) mData.get(position).get("ItemText"));
 
 		StringHolder strholder = new StringHolder();

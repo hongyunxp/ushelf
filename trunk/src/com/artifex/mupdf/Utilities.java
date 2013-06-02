@@ -20,7 +20,7 @@ public class Utilities {
 	private Bitmap thumbBm;
 
 	public void saveThumbnail(String filePath, int page) {
-		
+
 		core = openFile("/mnt/sdcard/Download/" + filePath + ".pdf");
 		if (core == null) {
 			Log.i("saveThumbnail", "open file failed!");
@@ -32,22 +32,22 @@ public class Utilities {
 		core.drawPage(page, orgBm, 885, 1323, 0, 0, 885, 1323);
 
 		orgImage = new File("/mnt/sdcard/ushelf_cache/" + filePath + ".png");
-		
+
 		/* 保存原始图片 */
 		try {
 			orgImage.createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		FileOutputStream fOut = null;
-		
+
 		try {
 			fOut = new FileOutputStream(orgImage);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		orgBm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
 
 		try {
@@ -56,26 +56,27 @@ public class Utilities {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		thumbImage = new File( "/mnt/sdcard/ushelf_cache/" + filePath + "_thumb.png" );
+
+		thumbImage = new File("/mnt/sdcard/ushelf_cache/" + filePath
+				+ "_thumb.png");
 		/* 保存缩略图 */
 		try {
 			thumbImage.createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		FileOutputStream fOutT = null;
-		
+
 		try {
 			fOutT = new FileOutputStream(thumbImage);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		thumbBm = decodeFile( orgImage );
+
+		thumbBm = decodeFile(orgImage);
 		thumbBm.compress(Bitmap.CompressFormat.PNG, 100, fOutT);
-		
+
 		try {
 			fOutT.flush();
 			fOutT.close();

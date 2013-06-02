@@ -34,13 +34,12 @@ public class ListModelView extends ListActivity {
 		String storageState = Environment.getExternalStorageState();
 
 		if (!Environment.MEDIA_MOUNTED.equals(storageState)
-				&& !Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState))
-		{
+				&& !Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.no_media_warning);
 			builder.setMessage(R.string.no_media_hint);
 			AlertDialog alert = builder.create();
-			alert.setButton(AlertDialog.BUTTON_POSITIVE,"Dismiss",
+			alert.setButton(AlertDialog.BUTTON_POSITIVE, "Dismiss",
 					new OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							finish();
@@ -50,7 +49,8 @@ public class ListModelView extends ListActivity {
 			return;
 		}
 
-		mDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+		mDirectory = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 		mFiles = mDirectory.listFiles(new FilenameFilter() {
 			public boolean accept(File file, String name) {
 				if (name.toLowerCase().endsWith(".pdf"))
@@ -66,21 +66,23 @@ public class ListModelView extends ListActivity {
 		List<String> fileNames = new ArrayList<String>();
 		for (File f : mFiles)
 			fileNames.add(f.getName());
-		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.picker_entry, fileNames);
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				R.layout.picker_entry, fileNames);
 		setListAdapter(adapter);
-		
+
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                R.layout.titlebar);
-		
-		btnGrid = (Button)findViewById(R.id.btnGrid);
-		btnList = (Button)findViewById(R.id.btnList);
-		
+				R.layout.titlebar);
+
+		btnGrid = (Button) findViewById(R.id.btnGrid);
+		btnList = (Button) findViewById(R.id.btnList);
+
 		btnGrid.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent	intent = new Intent(ListModelView.this, MainActivity.class);
+				Intent intent = new Intent(ListModelView.this,
+						MainActivity.class);
 				btnGrid.setBackgroundResource(R.drawable.grid_in_30);
 				btnList.setBackgroundResource(R.drawable.list_on_30);
 				ListModelView.this.startActivity(intent);
@@ -92,7 +94,7 @@ public class ListModelView extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Uri uri = Uri.parse(mFiles[position].getAbsolutePath());
-		Intent intent = new Intent(this,MuPDFActivity.class);
+		Intent intent = new Intent(this, MuPDFActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.setData(uri);
 		startActivity(intent);

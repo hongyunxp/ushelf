@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
 class PatchInfo {
 	public Bitmap bm;
 	public Point patchViewSize;
-	public Rect  patchArea;
+	public Rect patchArea;
 
 	public PatchInfo(Bitmap aBm, Point aPatchViewSize, Rect aPatchArea) {
 		bm = aBm;
@@ -77,13 +77,15 @@ public abstract class PageView extends ViewGroup {
 
 	public PageView(Context c, Point parentSize) {
 		super(c);
-		mContext    = c;
+		mContext = c;
 		mParentSize = parentSize;
 		setBackgroundColor(BACKGROUND_COLOR);
 		mUsingHardwareAcceleration = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	}
 
-	protected abstract void drawPage(Bitmap bm, int sizeX, int sizeY, int patchX, int patchY, int patchWidth, int patchHeight);
+	protected abstract void drawPage(Bitmap bm, int sizeX, int sizeY,
+			int patchX, int patchY, int patchWidth, int patchHeight);
+
 	protected abstract LinkInfo[] getLinkInfo();
 
 	public void releaseResources() {
@@ -166,8 +168,9 @@ public abstract class PageView extends ViewGroup {
 
 		// Calculate scaled size that fits within the screen limits
 		// This is the size at minimum zoom
-		mSourceScale = Math.min(mParentSize.x/size.x, mParentSize.y/size.y);
-		Point newSize = new Point((int)(size.x*mSourceScale), (int)(size.y*mSourceScale));
+		mSourceScale = Math.min(mParentSize.x / size.x, mParentSize.y / size.y);
+		Point newSize = new Point((int) (size.x * mSourceScale),
+				(int) (size.y * mSourceScale));
 		mSize = newSize;
 
 		if (mUsingHardwareAcceleration) {
@@ -179,12 +182,13 @@ public abstract class PageView extends ViewGroup {
 		}
 
 		if (mEntireBm == null || mEntireBm.getWidth() != newSize.x
-				              || mEntireBm.getHeight() != newSize.y) {
-			mEntireBm = Bitmap.createBitmap(mSize.x, mSize.y, Bitmap.Config.ARGB_8888);
+				|| mEntireBm.getHeight() != newSize.y) {
+			mEntireBm = Bitmap.createBitmap(mSize.x, mSize.y,
+					Bitmap.Config.ARGB_8888);
 		}
 
 		// Render the page in the background
-		mDrawEntire = new SafeAsyncTask<Void,Void,LinkInfo[]>() {
+		mDrawEntire = new SafeAsyncTask<Void, Void, LinkInfo[]>() {
 			protected LinkInfo[] doInBackground(Void... v) {
 				drawPage(mEntireBm, mSize.x, mSize.y, 0, 0, mSize.x, mSize.y);
 				return getLinkInfo();
@@ -224,7 +228,8 @@ public abstract class PageView extends ViewGroup {
 				@Override
 				protected void onDraw(Canvas canvas) {
 					super.onDraw(canvas);
-					float scale = mSourceScale*(float)getWidth()/(float)mSize.x;
+					float scale = mSourceScale * (float) getWidth()
+							/ (float) mSize.x;
 					Paint paint = new Paint();
 
 					if (!mIsBlank && mSearchBoxes != null) {
@@ -232,9 +237,9 @@ public abstract class PageView extends ViewGroup {
 						// from source to view
 						paint.setColor(HIGHLIGHT_COLOR);
 						for (RectF rect : mSearchBoxes)
-							canvas.drawRect(rect.left*scale, rect.top*scale,
-									        rect.right*scale, rect.bottom*scale,
-									        paint);
+							canvas.drawRect(rect.left * scale,
+									rect.top * scale, rect.right * scale,
+									rect.bottom * scale, paint);
 					}
 
 					if (!mIsBlank && mLinks != null && mHighlightLinks) {
@@ -242,9 +247,9 @@ public abstract class PageView extends ViewGroup {
 						// from source to view
 						paint.setColor(LINK_COLOR);
 						for (RectF rect : mLinks)
-							canvas.drawRect(rect.left*scale, rect.top*scale,
-									        rect.right*scale, rect.bottom*scale,
-									        paint);
+							canvas.drawRect(rect.left * scale,
+									rect.top * scale, rect.right * scale,
+									rect.bottom * scale, paint);
 					}
 				}
 			};
@@ -269,14 +274,14 @@ public abstract class PageView extends ViewGroup {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		int x, y;
-		switch(View.MeasureSpec.getMode(widthMeasureSpec)) {
+		switch (View.MeasureSpec.getMode(widthMeasureSpec)) {
 		case View.MeasureSpec.UNSPECIFIED:
 			x = mSize.x;
 			break;
 		default:
 			x = View.MeasureSpec.getSize(widthMeasureSpec);
 		}
-		switch(View.MeasureSpec.getMode(heightMeasureSpec)) {
+		switch (View.MeasureSpec.getMode(heightMeasureSpec)) {
 		case View.MeasureSpec.UNSPECIFIED:
 			y = mSize.y;
 			break;
@@ -287,15 +292,17 @@ public abstract class PageView extends ViewGroup {
 		setMeasuredDimension(x, y);
 
 		if (mBusyIndicator != null) {
-			int limit = Math.min(mParentSize.x, mParentSize.y)/2;
-			mBusyIndicator.measure(View.MeasureSpec.AT_MOST | limit, View.MeasureSpec.AT_MOST | limit);
+			int limit = Math.min(mParentSize.x, mParentSize.y) / 2;
+			mBusyIndicator.measure(View.MeasureSpec.AT_MOST | limit,
+					View.MeasureSpec.AT_MOST | limit);
 		}
 	}
 
 	@Override
-	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-		int w  = right-left;
-		int h = bottom-top;
+	protected void onLayout(boolean changed, int left, int top, int right,
+			int bottom) {
+		int w = right - left;
+		int h = bottom - top;
 
 		if (mEntire != null) {
 			mEntire.layout(0, 0, w, h);
@@ -309,11 +316,12 @@ public abstract class PageView extends ViewGroup {
 			if (mPatchViewSize.x != w || mPatchViewSize.y != h) {
 				// Zoomed since patch was created
 				mPatchViewSize = null;
-				mPatchArea     = null;
+				mPatchArea = null;
 				if (mPatch != null)
 					mPatch.setImageBitmap(null);
 			} else {
-				mPatch.layout(mPatchArea.left, mPatchArea.top, mPatchArea.right, mPatchArea.bottom);
+				mPatch.layout(mPatchArea.left, mPatchArea.top,
+						mPatchArea.right, mPatchArea.bottom);
 			}
 		}
 
@@ -321,13 +329,15 @@ public abstract class PageView extends ViewGroup {
 			int bw = mBusyIndicator.getMeasuredWidth();
 			int bh = mBusyIndicator.getMeasuredHeight();
 
-			mBusyIndicator.layout((w-bw)/2, (h-bh)/2, (w+bw)/2, (h+bh)/2);
+			mBusyIndicator.layout((w - bw) / 2, (h - bh) / 2, (w + bw) / 2,
+					(h + bh) / 2);
 		}
 	}
 
 	public void addHq() {
-		Rect viewArea = new Rect(getLeft(),getTop(),getRight(),getBottom());
-		// If the viewArea's size matches the unzoomed size, there is no need for an hq patch
+		Rect viewArea = new Rect(getLeft(), getTop(), getRight(), getBottom());
+		// If the viewArea's size matches the unzoomed size, there is no need
+		// for an hq patch
 		if (viewArea.width() != mSize.x || viewArea.height() != mSize.y) {
 			Point patchViewSize = new Point(viewArea.width(), viewArea.height());
 			Rect patchArea = new Rect(0, 0, mParentSize.x, mParentSize.y);
@@ -340,7 +350,8 @@ public abstract class PageView extends ViewGroup {
 			patchArea.offset(-viewArea.left, -viewArea.top);
 
 			// If being asked for the same area as last time, nothing to do
-			if (patchArea.equals(mPatchArea) && patchViewSize.equals(mPatchViewSize))
+			if (patchArea.equals(mPatchArea)
+					&& patchViewSize.equals(mPatchViewSize))
 				return;
 
 			// Stop the drawing of previous patch if still going
@@ -357,24 +368,28 @@ public abstract class PageView extends ViewGroup {
 				mSearchView.bringToFront();
 			}
 
-			Bitmap bm = Bitmap.createBitmap(patchArea.width(), patchArea.height(), Bitmap.Config.ARGB_8888);
+			Bitmap bm = Bitmap.createBitmap(patchArea.width(),
+					patchArea.height(), Bitmap.Config.ARGB_8888);
 
-			mDrawPatch = new SafeAsyncTask<PatchInfo,Void,PatchInfo>() {
+			mDrawPatch = new SafeAsyncTask<PatchInfo, Void, PatchInfo>() {
 				protected PatchInfo doInBackground(PatchInfo... v) {
-					drawPage(v[0].bm, v[0].patchViewSize.x, v[0].patchViewSize.y,
-									  v[0].patchArea.left, v[0].patchArea.top,
-									  v[0].patchArea.width(), v[0].patchArea.height());
+					drawPage(v[0].bm, v[0].patchViewSize.x,
+							v[0].patchViewSize.y, v[0].patchArea.left,
+							v[0].patchArea.top, v[0].patchArea.width(),
+							v[0].patchArea.height());
 					return v[0];
 				}
 
 				protected void onPostExecute(PatchInfo v) {
 					mPatchViewSize = v.patchViewSize;
-					mPatchArea     = v.patchArea;
+					mPatchArea = v.patchArea;
 					mPatch.setImageBitmap(v.bm);
-					//requestLayout();
-					// Calling requestLayout here doesn't lead to a later call to layout. No idea
+					// requestLayout();
+					// Calling requestLayout here doesn't lead to a later call
+					// to layout. No idea
 					// why, but apparently others have run into the problem.
-					mPatch.layout(mPatchArea.left, mPatchArea.top, mPatchArea.right, mPatchArea.bottom);
+					mPatch.layout(mPatchArea.left, mPatchArea.top,
+							mPatchArea.right, mPatchArea.bottom);
 					invalidate();
 				}
 			};
@@ -384,17 +399,17 @@ public abstract class PageView extends ViewGroup {
 	}
 
 	public void removeHq() {
-			// Stop the drawing of the patch if still going
-			if (mDrawPatch != null) {
-				mDrawPatch.cancel(true);
-				mDrawPatch = null;
-			}
+		// Stop the drawing of the patch if still going
+		if (mDrawPatch != null) {
+			mDrawPatch.cancel(true);
+			mDrawPatch = null;
+		}
 
-			// And get rid of it
-			mPatchViewSize = null;
-			mPatchArea = null;
-			if (mPatch != null)
-				mPatch.setImageBitmap(null);
+		// And get rid of it
+		mPatchViewSize = null;
+		mPatchArea = null;
+		if (mPatch != null)
+			mPatch.setImageBitmap(null);
 	}
 
 	public int getPage() {
