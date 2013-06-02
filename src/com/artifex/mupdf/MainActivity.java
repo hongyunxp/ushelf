@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 	private Button btnEdit;
 	private Button btnList;
 	private Button btnGrid;
-	private static boolean smodel = true;	//true : grid, false : list
+	private static boolean smodel = true; // true : grid, false : list
 	private ListView lv;
 	private ArrayList<HashMap<String, Object>> bookList;
 
@@ -45,19 +45,19 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        if ( smodel == true ) {
-        	setContentView(R.layout.main);
-        } else {
-        	setContentView(R.layout.main_list);
-        }
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                        R.layout.titlebar);
-        
-        btnList = (Button)findViewById(R.id.btnList);
-        btnEdit = (Button)findViewById(R.id.btnEdit);
-        btnGrid = (Button)findViewById(R.id.btnGrid);
-		
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		if (smodel == true) {
+			setContentView(R.layout.main);
+		} else {
+			setContentView(R.layout.main_list);
+		}
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+				R.layout.titlebar);
+
+		btnList = (Button) findViewById(R.id.btnList);
+		btnEdit = (Button) findViewById(R.id.btnEdit);
+		btnGrid = (Button) findViewById(R.id.btnGrid);
+
 		String storageState = Environment.getExternalStorageState();
 
 		if (!Environment.MEDIA_MOUNTED.equals(storageState)
@@ -78,7 +78,7 @@ public class MainActivity extends Activity {
 
 		mDirectory = Environment
 				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-		
+
 		mFiles = mDirectory.listFiles(new FilenameFilter() {
 			public boolean accept(File file, String name) {
 				if (name.toLowerCase().endsWith(".pdf"))
@@ -91,70 +91,69 @@ public class MainActivity extends Activity {
 			}
 
 		});
-		
+
 		/* 搜索缓存文件夹，若不存在则新建缓存文件夹 */
 		cacheDirectory = new File("/mnt/sdcard/ushelf_cache");
-		if ( !cacheDirectory.exists() ) {
+		if (!cacheDirectory.exists()) {
 			cacheDirectory.mkdir();
 		}
-		
+
 		bookList = new ArrayList<HashMap<String, Object>>();
 
 		for (File f : mFiles) {
 			String tmpName = f.getName().substring(0, f.getName().length() - 4);
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			/* 对于每个文件，查找是否已经存在缩略图，若不存在，自动生成一个并缓存，若存在直接添加到ItemImage中 */
-			imgBook = new File("/mnt/sdcard/ushelf_cache/"
-					+ tmpName + "_thumb.png");
-			if ( !imgBook.exists() ) {
-				Log.i("file is not exist!", "thumbimage" );
-				utility.saveThumbnail(tmpName ,0);
-				
+			imgBook = new File("/mnt/sdcard/ushelf_cache/" + tmpName
+					+ "_thumb.png");
+			if (!imgBook.exists()) {
+				Log.i("file is not exist!", "thumbimage");
+				utility.saveThumbnail(tmpName, 0);
+
 			}
-	
+
 			Bitmap bm = BitmapFactory.decodeFile("/mnt/sdcard/ushelf_cache/"
 					+ tmpName + "_thumb.png");
-			map.put("ItemImage", bm ); 
+			map.put("ItemImage", bm);
 			map.put("ItemText", f.getName());
 			bookList.add(map);
 		}
-		
+
 		btnGrid.setOnClickListener(listernGrid);
 		btnList.setOnClickListener(listernList);
-	
-		if ( smodel == true ) {
+
+		if (smodel == true) {
 			showGrid();
-        } else {
-        	showList();
-        	btnGrid.setBackgroundResource(R.drawable.grid_on_30);
+		} else {
+			showList();
+			btnGrid.setBackgroundResource(R.drawable.grid_on_30);
 			btnList.setBackgroundResource(R.drawable.list_in_30);
-        }
-		
-		
+		}
+
 	}
-	
+
 	private void showGrid() {
 		/* 表格显示 */
 		GridView gridview = (GridView) findViewById(R.id.GridView);
-		
+
 		SimpleAdapter saItem = new SimpleAdapter(this, bookList, // 数据源
 				R.layout.item, // xml实现
 				new String[] { "ItemImage" }, new int[] { R.id.ItemImage });
-		
-		saItem.setViewBinder(new ViewBinder(){
+
+		saItem.setViewBinder(new ViewBinder() {
 
 			@Override
 			public boolean setViewValue(View view, Object data,
 					String textRepresentation) {
-				if ( (view instanceof ImageView) & (data instanceof Bitmap) ) {
+				if ((view instanceof ImageView) & (data instanceof Bitmap)) {
 					ImageView iv = (ImageView) view;
 					Bitmap bm = (Bitmap) data;
 					iv.setImageBitmap(bm);
 					return true;
 				}
 				return false;
-			}  
-			
+			}
+
 		});
 
 		// 添加Item到网格中
@@ -174,10 +173,10 @@ public class MainActivity extends Activity {
 		});
 
 	}
-	
+
 	private void showList() {
-		
-		lv = (ListView)findViewById(R.id.bookListView);
+
+		lv = (ListView) findViewById(R.id.bookListView);
 		ListAdapter listAdapter = new ListAdapter(this, bookList);
 		lv.setAdapter(listAdapter);
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -192,21 +191,21 @@ public class MainActivity extends Activity {
 				intent.setData(uri);
 				startActivity(intent);
 			}
-			
+
 		});
-		
+
 	}
 
 	private void setGridView() {
 		setContentView(R.layout.main);
 	}
-	
+
 	private void setListView() {
 		setContentView(R.layout.main_list);
 	}
-	
+
 	private android.view.View.OnClickListener listernList = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			setListView();
@@ -216,9 +215,9 @@ public class MainActivity extends Activity {
 			btnList.setBackgroundResource(R.drawable.list_in_30);
 		}
 	};
-	
+
 	private android.view.View.OnClickListener listernGrid = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			setGridView();
@@ -228,12 +227,12 @@ public class MainActivity extends Activity {
 			btnList.setBackgroundResource(R.drawable.list_on_30);
 		}
 	};
-	
+
 	private android.view.View.OnClickListener listernEdit = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
-			
+
 		}
 	};
 }

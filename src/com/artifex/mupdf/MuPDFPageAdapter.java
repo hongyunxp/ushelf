@@ -34,7 +34,8 @@ public class MuPDFPageAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		final MuPDFPageView pageView;
 		if (convertView == null) {
-			pageView = new MuPDFPageView(mContext, mCore, new Point(parent.getWidth(), parent.getHeight()));
+			pageView = new MuPDFPageView(mContext, mCore, new Point(
+					parent.getWidth(), parent.getHeight()));
 		} else {
 			pageView = (MuPDFPageView) convertView;
 		}
@@ -48,7 +49,7 @@ public class MuPDFPageAdapter extends BaseAdapter {
 			// Page size as yet unknown. Blank it for now, and
 			// start a background task to find the size
 			pageView.blank(position);
-			SafeAsyncTask<Void,Void,PointF> sizingTask = new SafeAsyncTask<Void,Void,PointF>() {
+			SafeAsyncTask<Void, Void, PointF> sizingTask = new SafeAsyncTask<Void, Void, PointF>() {
 				@Override
 				protected PointF doInBackground(Void... arg0) {
 					return mCore.getPageSize(position);
@@ -66,7 +67,7 @@ public class MuPDFPageAdapter extends BaseAdapter {
 				}
 			};
 
-			sizingTask.safeExecute((Void)null);
+			sizingTask.safeExecute((Void) null);
 		}
 		return pageView;
 	}
